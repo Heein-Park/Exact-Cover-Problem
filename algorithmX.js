@@ -11,76 +11,91 @@ const { knuthShuffle } = require("knuth-shuffle");
 
 const sourceArray = new Array(10).fill(0).map((element, idx) => idx);
 console.log(`The source array contains randomly generated numbers : ${sourceArray}`);
-const subsets = subArrays(sourceArray, 1, sourceArray.length);
-knuthShuffle(subsets);
-subsets.splice(0, subsets.length / 2);
-subsets.forEach((subset, idx) => {
+const tempSubsets = subArrays(sourceArray, 1, sourceArray.length);
+knuthShuffle(tempSubsets);
+tempSubsets.splice(0, tempSubsets.length / 2);
+tempSubsets.forEach((subset, idx) => {
     console.log(`The ${idx} subset is [${subset}]`);
 })
 
-const generateMatrix = (source, _subsets) => {
-    const dummyArray = new Array(source.length).fill(0);
-    const matrix = [];
-    for (const set of _subsets) {
-        const arrToPush = [...dummyArray];
-        for (const element of set) {
-            const idx = source.findIndex(srcElement => srcElement === element);
-            arrToPush[idx] = 1;
+// Create a prototype class for matrix object from a source set and subsets
+// Create : new Matrix(source, subsets)
+// Read : {
+//     Matrix.prototype.readRow(rowNum),
+//     Matrix.protoype.readColumn(colNum),
+//     Matrix.protoype.read(rowNum, colNum),
+// }
+// Update : Matrix.protoype.write(rowNum, colNum, value)
+// Delete : {
+//     Matrix.prototype.deleteRow(rowNum),
+//     Matrix.protoype.deleteColumn(colNum),
+// }
+
+class Matrix {
+    constructor(source, subsets) {
+        const dummyArray = new Array(source.length).fill(0);
+        this.matrix = [];
+        for (const set of subsets) {
+            const rowToPush = [...dummyArray];
+            for (const element of set) {
+                const idx = source.findIndex(srcElement => srcElement === element);
+                rowToPush[idx] = 1;
+            }
+            this.matrix.push(rowToPush);
         }
-        matrix.push(arrToPush);
     }
-    return matrix;
+
+    read(rowIdx, colIdx) {
+        return this.matrix[rowIdx][colIdx];
+    }
+
+    readRow(rowIdx) {
+        return this.matrix[rowIdx];
+    }
+
+    readColumn(colIdx) {
+        const column = [];
+        for (const row of this.matrix) {
+            column.push(row[colIdx])
+        }
+        return column;
+    }
+
+    write(rowIdx, colIdx, value) {
+        this.matrix[rowIdx][colIdx] = value;
+    }
+
+    deleteRow(rowIdx) {
+        this.matrix.splice(rowIdx,1);
+    }
+
+    deelteColumn(colIdx) {
+        const column = [];
+        for (const row of this.matrix) {
+            column.push(row[colIdx]);
+        }
+        return column;
+    }
 }
-const subsetsMatrix = generateMatrix(sourceArray, subsets);
-subsetsMatrix.forEach(row => {
+
+
+const subsetsMatrix = new Matrix(sourceArray, tempSubsets);
+console.log(subsetsMatrix.readRow(10));
+console.log(subsetsMatrix.readColumn(2));
+subsetsMatrix.matrix.forEach(row => {
     console.log(`[${row}]`);
 })
 
-function algorithmX(_matrix) {
-    if (_matrix.length < 1) return;
-    const tempMat = [..._matrix]
-    const columnsNumber = tempMat[0].length
-    const columns = new Array(columnsNumber).fill([]).map(dummy => dummy.slice(0));
+// function algorithmX(_matrix) {
+//     if (_matrix.length < 1) return;
+//     const matrix = [..._matrix];
 
-    _matrix.forEach(row => {
-        for (let i = 0; i < row.length; i++) {
-            columns[i].push(row[i]);
-        }
-    })
-    console.log(columns);
+//     for (let rowIdx = 0; rowIdx < matrix.length; rowIdx++) {
+//         const rowArray = matrix[rowIdx];
+//         for (let colIdx = 0; colIdx < rowArray.length; colIdx++) {
 
-    const oneCounts = columns.map((col, idx) => {
-        return {
-            index: idx,
-            counts: col.reduce((counter, current) => {
-                if (current === 1) counter++;
-                return counter;
-            }, 0)
-        }
-    })
-    oneCounts.sort((a, b) => (a.counts > b.counts) ? 1 : -1);
-    console.log(oneCounts);
+//         }
+//     }
+// }
 
-    for (const object of oneCounts) {
-        const idx = object.index;
-        const col = columns[idx];
-
-        for (const row of tempMat) {
-            row.splice(idx, 1)
-        }
-
-        const deletionCount = 0;
-        for (let j = 0; j < col.length; j++) {
-            const isOne = col[j] > 0;
-            if (isOne) {
-                tempMat.splice(j - deletionCount, 1)
-            }
-        }
-
-        tempMat.forEach(row => {
-            console.log(`[${row}]`);
-        })
-    }
-}
-
-algorithmX(subsetsMatrix);
+// algorithmX(subsetsMatrix);
