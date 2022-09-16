@@ -5,12 +5,17 @@
   "main": "algorithmX.js",
   "scripts": {
     "start": "node algorithmX.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Heein Park",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
     "knuth-shuffle": "1.0",
     "sub-arrays-js": "^0.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0"
   }
 }
