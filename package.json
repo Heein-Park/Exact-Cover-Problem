@@ -11,8 +11,10 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
-    "knuth-shuffle": "1.0",
-    "sub-arrays-js": "^0.0.3"
+    "knuth-shuffle": "1.0"
+  },
+  "imports": {
+    "#module/*": "./module/*.js"
   },
   "devDependencies": {
     "chai": "^4.3.6",
