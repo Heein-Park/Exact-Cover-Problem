@@ -1,9 +1,8 @@
-import Cell from '../module/cell.js';
+import Cell from '#module/cell';
 import { assert, expect } from 'chai';
 
 describe('Cell Unit Test', function () {
     const cell = new Cell(10);
-    console.dir(cell);
     it('Create a cell object from Class Cell', () => expect(cell).to.be.ok)
 
     it('The cell object has its properties', () => {
@@ -19,6 +18,5 @@ describe('Cell Unit Test', function () {
         cell.left = next;
         expect(cell).to.have.property('left');
         expect(cell.left).to.equal(next).and.to.include({value : 15});
-        console.dir(cell);
     })
 })
