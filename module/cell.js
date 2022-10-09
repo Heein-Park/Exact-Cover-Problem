@@ -1,15 +1,8 @@
-/*
-    Create : new Matrix(source)
-    Update : Matrix.protoype.write(row, col, value)
-*/
-
 export default class Cell {
     value;
     #private = {
         left: undefined,
         bottom: undefined,
-        right: undefined,
-        top: undefined
     };
 
     constructor(value) {
